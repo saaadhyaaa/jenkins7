@@ -6,7 +6,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                // FIXED: Correct syntax for checking out a specific branch and repository URL
+                git branch: 'main', url: 'https://github.com/saaadhyaaa/jenkins7.git'
             }
         }
 
