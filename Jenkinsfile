@@ -1,25 +1,18 @@
 pipeline {
-    agent { 
-        node { label 'windows' } 
-    }
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
-                // FIXED: Correct syntax for checking out a specific branch and repository URL
                 git branch: 'main', url: 'https://github.com/saaadhyaaa/jenkins7.git'
             }
         }
 
         stage('Build') {
             steps {
-                // Compiles app.py to check for syntax errors
                 bat 'python -m py_compile app.py'
-                
                 echo 'Waiting 15 seconds...'
                 sleep time: 15, unit: 'SECONDS'
-                
-                // Newer builds reaching this point will cancel older builds
                 milestone(1)
             }
         }
@@ -29,7 +22,7 @@ pipeline {
                 script {
                     def mailSubject = "Build Notification: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}"
                     def mailBody = "The build completed. View details here: ${env.BUILD_URL}"
-                    def recipient = "your-email@example.com" // Replace with your actual email
+                    def recipient = "your-email@example.com"
 
                     try {
                         mail to: recipient,
